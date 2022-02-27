@@ -83,6 +83,12 @@ static void wifi_dump_ap_info() {
     ESP_LOGI(TAG,"Phy Mode: 11%s%s%s %s",apinfo.phy_11b ? "B" : "",apinfo.phy_11g ? "G" : "", apinfo.phy_11n ? "N" : "", apinfo.phy_lr ? "LR" : "");
 }
 
+static void wifi_reset(void) {
+    ESP_LOGI(TAG, "WiFi AP will reset in 300s!!!");
+    vTaskDelay(300000 / portTICK_PERIOD_MS);
+    app_wifi_startup();
+}
+
 void wifi_init_softap()
 {
     if (strcmp(CONFIG_SERVER_IP, "192.168.4.1"))
@@ -108,6 +114,10 @@ void wifi_init_softap()
         wifi_config.ap.authmode = WIFI_AUTH_OPEN;
     }
 
+    if (*settings.wifi_ssid != '\0'){
+        xTaskCreate(wifi_reset, "wifi_reset_task", 1024*2, NULL, configMAX_PRIORITIES, NULL);
+    }
+
     ESP_ERROR_CHECK(esp_wifi_set_config(ESP_IF_WIFI_AP, &wifi_config));
     xEventGroupSetBits(event_group, WIFI_SOFTAP_BIT);
     ESP_LOGI(TAG, "wifi_init_softap finished.SSID:%s password:%s",
@@ -119,6 +129,9 @@ static void wifi_init_sta(void) {
     memset(&wifi_config, 0, sizeof(wifi_config_t));
     snprintf((char*)wifi_config.sta.ssid, 32, "%s", settings.wifi_ssid);
     snprintf((char*)wifi_config.sta.password, 64, "%s", settings.wifi_password);
+    if (*settings.wifi_ssid == '\0'){
+        snprintf((char*)wifi_config.sta.ssid, 32, "%s", "dummy_ssid");
+    }
     ESP_LOGI(TAG, "Connecting to AP SSID:%s password:%s",
         wifi_config.sta.ssid, wifi_config.sta.password);
         

@@ -23,7 +23,7 @@ static const char* NVS_KEY = "settings";
 static void log_settings() {
   ESP_LOGI(TAG, " hostname=%s", settings.hostname);
   ESP_LOGI(TAG, " wifi_ssid=%s", settings.wifi_ssid);
-  ESP_LOGI(TAG, " wifi_password=%s", settings.wifi_password);
+  ESP_LOGI(TAG, " wifi_password=%s", "***");
   #ifdef CONFIG_MDNS_ENABLED
   ESP_LOGI(TAG, " mdns_instance=%s", settings.mdns_instance);
   #endif

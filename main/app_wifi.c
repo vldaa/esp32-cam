@@ -133,15 +133,15 @@ static void wifi_init_sta(void) {
         snprintf((char*)wifi_config.sta.ssid, 32, "%s", "dummy_ssid");
     }
     ESP_LOGI(TAG, "Connecting to AP SSID:%s password:%s",
-        wifi_config.sta.ssid, wifi_config.sta.password);
-        
+        wifi_config.sta.ssid, "***");
+
     wifi_config.sta.scan_method = WIFI_ALL_CHANNEL_SCAN;
 
     ESP_ERROR_CHECK(esp_wifi_set_config(ESP_IF_WIFI_STA, &wifi_config) );
 
     ESP_LOGI(TAG, "wifi_init_sta finished.");
     ESP_LOGI(TAG, "connecting to ap SSID:%s password:%s",
-             wifi_config.sta.ssid, wifi_config.sta.password);
+             wifi_config.sta.ssid, "***");
 }
 
 static void event_handler(void* arg, esp_event_base_t event_base, int32_t event_id, void* event_data)

@@ -89,6 +89,27 @@ Important settings are:
 - To enable font overlays, under *Font Configuration* check *Store Font Partition* (Uses approximately 240K of flash)
 - Enable NTP and select a default NTP server and timezone under *NTP configuration*
 
+
+
+**!!!**   
+**Build problems with CMakeLists for ssd1306.**  
+```
+  Cannot find source file:
+
+    ~/esp/esp32-cam/components/esp-idf-ssd1306/ssd1306.c
+
+```
+Add main folder in components/esp-idf-ssd1306/CMakeLists.txt to look like this:
+```
+set(COMPONENT_ADD_INCLUDEDIRS .)
+set(COMPONENT_ADD_INCLUDEDIRS main)
+
+set(COMPONENT_SRCS "main/ssd1306.c")
+
+register_component()
+```
+
+
 When your settings are complete, save them and exit.
 
 If needed, clean your build directory with `idf.py fullclean`
